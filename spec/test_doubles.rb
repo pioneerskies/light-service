@@ -107,6 +107,7 @@ module TestDoubles
 
     def self.call(context)
       context[:foo] = [1, 2, 3]
+      context
     end
   end
 

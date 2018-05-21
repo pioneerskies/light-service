@@ -25,15 +25,17 @@ module LightService
         raise "No action(s) were provided" if actions.empty?
         actions.flatten!
 
-        actions.each_with_object(context) do |action, current_context|
+        actions.reduce(context) do |current_context, action|
           begin
-            invoke_action(current_context, action)
+            result = invoke_action(current_context, action)
           rescue FailWithRollbackError
-            reduce_rollback(actions)
+            result = reduce_rollback(actions)
           ensure
             # For logging
             yield(current_context, action) if block_given?
           end
+
+          result
         end
       end
 

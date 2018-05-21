@@ -74,7 +74,9 @@ describe LightService::Organizer do
     let(:reduced) { TestDoubles::NestingOrganizer.call(ctx) }
 
     it "reduces an organizer which returns something" do
-      expect(TestDoubles::ReturningOrganizer.call(ctx)).to eq([1, 2, 3])
+      result_context = TestDoubles::ReturningOrganizer.call(ctx)
+      expect(result_context.keys).to include(:user, :foo)
+      expect(result_context[:foo]).to eq([1, 2, 3])
     end
 
     it "adds :foo and :bar to the context" do
